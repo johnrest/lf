@@ -1,12 +1,11 @@
-D:\Projects\lf\test:
-└----childA_depth1
----------afile_depth2.txt
-└--------childA_depth2
-└------------childA_depth3
------------------file_depth3.txt
--------------file_depth3.txt
----------file_depth2.txt
-└----childB_depth1
------file_depth1.txt
------list.txt
------temp.txt
+□ D:\Projects\lf\test:
+└---□ childA_depth1
+	└---afile_depth2.txt
+	└---□ childA_depth2
+		└---□ childA_depth3
+			└---file_depth4.txt
+		└---file_depth3.txt
+	└---file_depth2.txt
+└---□ childB_depth1
+└---file_depth1.txt
+└---list.txt

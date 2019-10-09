@@ -1,7 +1,0 @@
-Folder PATH listing for volume Data
-Volume serial number is 4458-AD72
-D:.
-ÃÄÄÄchildA_depth1
-³   ÀÄÄÄchildA_depth2
-³       ÀÄÄÄchildA_depth3
-ÀÄÄÄchildB_depth1

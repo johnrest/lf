@@ -3,51 +3,57 @@ import glob
 import sys
 
 
-# if (sys.argv[1].lower() == "--help") or (sys.argv[1].lower() == "--h"):
-#     print("""
-#         lf [List Files] tool.
-#             Python script to generate a text file that recursively lists all 
-#             folders and files in a directory.
-#         Usage example:
-#         python lf.py filename.txt
-#         """)
-#     sys.exit()    
+if (len(sys.argv) < 2) or (len(sys.argv) > 4) or (sys.argv[1].lower() == "--help"):
+    print("""
+         List Files (lf) tool.
+             Python script that recursively lists all 
+             subdirectories and files in a main directory.
+             The representation is display in the console or written to a
+             file
+         Usage:
+         python lf.py --help
+         python lf.py dir [-f out_filename]
+         """)
+    sys.exit()    
 
-# filename = sys.argv[1]
-
-filename = "list.txt"
-
-target_dir = os.path.normpath(r"D:/Projects/lf/test/")
+target_dir = os.path.normpath(os.path.abspath(sys.argv[1]))
 
 nodes = glob.glob(os.path.join(target_dir, "**"), recursive=True)
-# for node in nodes[1:]:
-#     # print(node)
-#     # print(os.path.isdir(node), os.path.isfile(node))
-#     print(os.path.split(node))
 
 all_dirs = [target_dir]
 
-with open( os.path.join(target_dir, filename), "w", encoding='utf-8') as f:
-    f.write(target_dir + ":\n")
-    buffer_parent_dir = target_dir
-    for node in nodes[1:]:
-        if os.path.isdir(node):
-            parent_dir, child_dir = os.path.split(node)
-            print(parent_dir, child_dir)
-            if len(buffer_parent_dir) < len(parent_dir):
-                all_dirs.append(parent_dir)
-                buffer_parent_dir = parent_dir
-            
-            indent_carry = all_dirs.index(parent_dir)+1           
+folder_sym = "□ "
 
-            f.write("└" + indent_carry*4*"-" + child_dir + "\n")
+out = str()
+out += folder_sym + target_dir + ":\n"
 
-        if os.path.isfile(node):
-            parent_dir, child_file = os.path.split(node)
-            if len(buffer_parent_dir) < len(parent_dir):
-                all_dirs.append(parent_dir)
-                buffer_parent_dir = parent_dir
+buffer_parent_dir = target_dir
 
-            indent_carry = all_dirs.index(parent_dir)+1
-            f.write((indent_carry*4+1)*"-" + child_file + "\n")
+for node in nodes[1:]:
+    if os.path.isdir(node):
+        parent_dir, child_dir = os.path.split(node)
+        if len(buffer_parent_dir) < len(parent_dir):
+            all_dirs.append(parent_dir)
+            buffer_parent_dir = parent_dir
+        
+        indent_carry = all_dirs.index(parent_dir)+1           
 
+        out += (indent_carry-1)*"\t" + "└" + 3*"-" + folder_sym + child_dir + "\n"
+
+    if os.path.isfile(node):
+        parent_dir, child_file = os.path.split(node)
+        if len(buffer_parent_dir) < len(parent_dir):
+            all_dirs.append(parent_dir)
+            buffer_parent_dir = parent_dir
+
+        indent_carry = all_dirs.index(parent_dir)+1
+        out += (indent_carry-1)*"\t" + "└" + 3*"-" + child_file + "\n"
+
+if (len(sys.argv) == 2):
+    print(out)
+
+if (len(sys.argv) > 2) and (sys.argv[2].lower() == "-f"):
+    filename = sys.argv[3]
+    with open( os.path.join(target_dir, filename), "w", encoding='utf-8') as f:
+        f.write(out)
+        print("Output to file: ", filename)
